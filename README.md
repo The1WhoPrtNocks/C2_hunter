@@ -18,3 +18,7 @@ From the c2_hunter directory call main with python and select the relevant optio
 ### HTTP analysis
 
 python.exe .\__main__.py cli http -f .\test_data\LR_HTTP_S_data.csv
+
+## TODO
+
+Add API Wrapper to allow for centralisation and automation of use
