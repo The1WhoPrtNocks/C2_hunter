@@ -1,0 +1,12 @@
+{
+    "timestamp": "Log Date",
+    "direction": "Direction",
+    "src_ip": "IP Address (Origin)",
+    "dst_ip": "IP Address (Impacted)",
+    "dst_host": "Host (Impacted)",
+    "dst_port": "TCP/UDP Port (Impacted)",
+    "sent_bytes": "Host (Impacted) KBytes Rcvd",
+    "url": "Domain (Impacted)",
+    "dns_record_type": "Command",
+    "delimiter": ","
+}
