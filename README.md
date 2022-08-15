@@ -1,7 +1,7 @@
 # C2_hunter
 Python conversion for RITA from BHIS that does not require Zeek.
 
-It uses and exported CSV from a SIEM tool that has the available data outlined in config/log.json
+It uses an exported CSV from a SIEM tool that has the available data outlined in config/log.json
 The string values in this file need to match the relevant column headers of your output data.
 The values can either be changed in the file or via the CLI options.
 
