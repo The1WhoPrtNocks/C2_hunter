@@ -1,7 +1,0 @@
-{
-    "Short Connections": "20",
-    "Jitter Seconds": "30",
-    "Jitter Data": "32",
-    "Data Transfer": "65535",
-    "Score Floor": "0.8"
-}
