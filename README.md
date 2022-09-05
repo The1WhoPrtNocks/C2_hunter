@@ -21,5 +21,5 @@ python.exe .\__main__.py cli http -f .\test_data\LR_HTTP_S_data.csv
 
 ## TODO
 
-Add API Wrapper to allow for centralisation and automation of use
-Expose average time Delta between polls to results screeen
+* Add API Wrapper to allow for centralisation and automation of use
+* Expose average time Delta between polls to results screeen
