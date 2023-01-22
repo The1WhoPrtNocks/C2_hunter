@@ -60,7 +60,6 @@ def analyse_time(http_df, timestamp_var):
     # convert the result back into a list and assign it to the 'deltas' column
     http_df['deltas'] = http_df[timestamp_var].apply(lambda x: pd.Series(x).diff().dt.seconds.dropna().tolist())
 
-
     # variables for time delta dispersion
     # both calculations are assessing the spread of the data
 
@@ -82,9 +81,6 @@ def analyse_time(http_df, timestamp_var):
         # add a check to ensure the denominator is not 0 if it is skewness if given a value of 0.0
         if x['tsBowleyDen'] != 0 and x['tsMid'] != x['tsLow'] and x['tsMid'] != x['tsHigh'] else 0.0, axis=1
         )
-    return http_df
-
-def analyse_transfer(http_df, timestamp_var, sent_bytes_var):
     # For the second calculation we calculate the Median Absolute Deviation (MAD)
     # https://www.statisticshowto.com/median-absolute-deviation/
     # User traffic will have a large MAD value, whilst beacons will have a small mad Value (close to 0)
@@ -92,8 +88,9 @@ def analyse_transfer(http_df, timestamp_var, sent_bytes_var):
 
     # we calculate the total time between the first and last connection in the data
     http_df['tsConnDiv'] = http_df[timestamp_var].apply(lambda x: (x[-1].to_pydatetime() - x[0].to_pydatetime()).seconds)
+    return http_df
 
-
+def analyse_transfer(http_df, timestamp_var, sent_bytes_var):
     # variables for data size dispersion
     # We do the same calculations for data size, refer to time stamp notes for info
     http_df['dsLow'] = http_df[sent_bytes_var].apply(lambda x: np.percentile(np.array(x), 25))
