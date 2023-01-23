@@ -9,11 +9,9 @@ pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 
 
-
 # built using https://github.com/activecm/rita/blob/master/pkg/beacon/analyzer.go
 
 # assign field/column names to variables
-
 
 def build_df(file, timestamp_var, direction_var, src_ip_var, dst_ip_var, dst_host_var, dst_port_var,
              sent_bytes_var, delimiter_var, allow_list):
@@ -24,10 +22,11 @@ def build_df(file, timestamp_var, direction_var, src_ip_var, dst_ip_var, dst_hos
     # get all rows and only the required columns
     http_df = http_df.loc[:, columns_to_filter]
 
-    # remove all none Outbound connections
-    http_df = http_df[http_df["Direction"] == "Outbound"]
+    # remove all none Outbound and external connections
+    # http_df = http_df[http_df["Direction"] == "Outbound"]
+    http_df = http_df[http_df["Direction"].isin(["Outbound", "External"])]
 
-    # re-classigy time stamp
+    # re-classify time stamp
     http_df[timestamp_var] = pd.to_datetime(http_df[timestamp_var])
 
     # Group connections for Analysis
@@ -60,6 +59,7 @@ def analyse_time(http_df, timestamp_var):
     # convert the result back into a list and assign it to the 'deltas' column
     http_df['deltas'] = http_df[timestamp_var].apply(lambda x: pd.Series(x).diff().dt.seconds.dropna().tolist())
 
+
     # variables for time delta dispersion
     # both calculations are assessing the spread of the data
 
@@ -81,6 +81,9 @@ def analyse_time(http_df, timestamp_var):
         # add a check to ensure the denominator is not 0 if it is skewness if given a value of 0.0
         if x['tsBowleyDen'] != 0 and x['tsMid'] != x['tsLow'] and x['tsMid'] != x['tsHigh'] else 0.0, axis=1
         )
+    return http_df
+
+def analyse_transfer(http_df, timestamp_var, sent_bytes_var):
     # For the second calculation we calculate the Median Absolute Deviation (MAD)
     # https://www.statisticshowto.com/median-absolute-deviation/
     # User traffic will have a large MAD value, whilst beacons will have a small mad Value (close to 0)
@@ -88,9 +91,8 @@ def analyse_time(http_df, timestamp_var):
 
     # we calculate the total time between the first and last connection in the data
     http_df['tsConnDiv'] = http_df[timestamp_var].apply(lambda x: (x[-1].to_pydatetime() - x[0].to_pydatetime()).seconds)
-    return http_df
 
-def analyse_transfer(http_df, timestamp_var, sent_bytes_var):
+
     # variables for data size dispersion
     # We do the same calculations for data size, refer to time stamp notes for info
     http_df['dsLow'] = http_df[sent_bytes_var].apply(lambda x: np.percentile(np.array(x), 25))
