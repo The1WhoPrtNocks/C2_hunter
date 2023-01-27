@@ -25,3 +25,4 @@ python.exe .\__main__.py cli http -f .\test_data\LR_HTTP_S_data.csv
 * Expose average time Delta between polls to results screeen
 * Add in DDNS detection method (current bypasses DNS analysis)
 * Use C2 Matrix to add in other protocols
+* Add Domain name as isolated destination for seperate calculation (helps with CDNs)
